@@ -29,5 +29,8 @@ public class Rect {
         g.setColor(Color.blue);
         g.fillRect(x, y , 10, 10);
     }
+    public void undraw(Graphics g){
+        g.clearRect(x, y, 10,10);
+    }
 }
 

@@ -12,7 +12,8 @@ public class Terrain {
 	float [][] height; // regular grid of height values
 	int dimx, dimy; // data dimensions
 	BufferedImage img; // greyscale image for displaying the terrain top-down
-
+	Water w;
+	BufferedImage waterImg;
 	ArrayList<Integer> permute;	// permuted list of integers in range [0, dimx*dimy)
 
 	// overall number of elements in the height grid
@@ -30,11 +31,16 @@ public class Terrain {
 		return dimy;
 	}
 
+
+
 	// get greyscale image
 	public BufferedImage getImage() {
 		  return img;
 	}
 
+	public BufferedImage getWaterImage() {
+		return waterImg;
+	}
 	// convert linear position into 2D location in grid
 	void locate(int pos, int [] ind)
 	{
@@ -66,7 +72,17 @@ public class Terrain {
 				 img.setRGB(x, y, col.getRGB());
 			}
 	}
+	void waterImageDer(){
+		waterImg = new BufferedImage(dimy, dimx, BufferedImage.TYPE_INT_ARGB);
 
+			for(int x=0; x < dimx; x++)
+				for(int y=0; y < dimy; y++) {
+					if (w.getWDepth(x,y) > 0){
+						waterImg.setRGB(x, y, Color.blue.getRGB());
+				}
+
+		}
+	}
 	// generate a permuted list of linear index positions to allow a random
 	// traversal over the terrain
 	void genPermute() {
@@ -95,12 +111,13 @@ public class Terrain {
 
 			// populate height grid
 			height = new float[dimx][dimy];
-
+			w = new Water(dimx, dimy);
 			for(int y = 0; y < dimy; y++){
-				for(int x = 0; x < dimx; x++)
+				for(int x = 0; x < dimx; x++){
 					height[x][y] = sc.nextFloat();
+					w.wDepth[x][y] = 0;
 				}
-
+			}
 			sc.close();
 
 			// create randomly permuted list of indices for traversal

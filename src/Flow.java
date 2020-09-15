@@ -17,7 +17,7 @@ public class Flow {
 	static JFrame frame;
 	static int xPos;
 	static int yPos;
-	// start timer
+	
 	private static void tick(){
 		startTime = System.currentTimeMillis();
 	}
@@ -63,11 +63,25 @@ public class Flow {
 				frame.dispose();
 			}
 		});
+
 		resetB.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent a){
 				//Add function to clear the page
+				for(int y = 0; y < landdata.getDimY(); y++){
+					for(int x = 0; x < landdata.getDimX(); x++){
+						landdata.w.wDepth[x][y] = 0;
+					}
+				}
+				landdata.waterImageDer();
+				fp.getGraphics().drawImage(landdata.getWaterImage(), 0, 0, null);
+				fp.repaint();
+
+				//w.remWater();
+				//fp.remRect();
+				//fp.repaint();
 			}
 		});
+
 		pauseB.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent b){
 				//Add function to stop the timer and the water flow
@@ -93,9 +107,28 @@ public class Flow {
 			public void mouseClicked(MouseEvent e){
 				//Add flow object to frame with mouse listening feature
 				//System.out.println("X:" +e.getX()+ " Y:" + e.getY());
+				int x = e.getX()-2;
+				int y = e.getY()-27;
 
+					for (int i = -3; i <= 3; i++) {
+						for (int j = -3; j <= 3; j++) {
+							try {
+								landdata.w.wDepth[x + i][y + j] += 0.03f;
+							}
+							catch (ArrayIndexOutOfBoundsException l){
+								continue;
+						}
+					}
+				}
+
+
+				landdata.waterImageDer();
+				fp.getGraphics().drawImage(landdata.getWaterImage(), 0, 0, null);
+				fp.repaint();
 				//panelObj.add(frame.setBackground(Color.blue));
-				fp.addRect(new Rect(e.getX() -5, e.getY() -30));//, Color.blue));
+				//fp.addRect(new Rect(e.getX() -5, e.getY() -30));//, Color.blue));
+//				w.initWater(e.getX()-5, e.getY()-30);
+//				System.out.println(w.getWDepth(e.getX(), e.getY()-30));
 				/*xPos = e.getX();
 				yPos = e.getY()-25;
 				frame.setBackground(Color.blue);*/
