@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Terrain {
 
-	float [][] height; // regular grid of height values
+	public float [][] height; // regular grid of height values
 	int dimx, dimy; // data dimensions
 	BufferedImage img; // greyscale image for displaying the terrain top-down
 	Water w;
@@ -73,7 +73,7 @@ public class Terrain {
 			}
 	}
 	void waterImageDer(){
-		waterImg = new BufferedImage(dimy, dimx, BufferedImage.TYPE_INT_ARGB);
+		waterImg = new BufferedImage(dimx, dimy, BufferedImage.TYPE_INT_ARGB);
 
 			for(int x=0; x < dimx; x++)
 				for(int y=0; y < dimy; y++) {
@@ -115,9 +115,21 @@ public class Terrain {
 			for(int y = 0; y < dimy; y++){
 				for(int x = 0; x < dimx; x++){
 					height[x][y] = sc.nextFloat();
+					w.altitudes[x][y] = height[x][y];
 					w.wDepth[x][y] = 0;
+
 				}
 			}
+
+			//transverse through the edges and assign altitude to zero
+			for (int r = 0; r < dimx; r++){
+				w.altitudes[r][0] = 0;
+				w.altitudes[r][dimy-1] = 0;
+				w.altitudes[0][r] = 0;
+				w.altitudes[dimx-1][r] = 0;
+			}
+			w.updateWSurface();
+			//w.getT(height);
 			sc.close();
 
 			// create randomly permuted list of indices for traversal
