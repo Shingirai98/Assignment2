@@ -83,6 +83,11 @@ public class Terrain {
 
 		}
 	}
+
+	void remWaterImage(int x, int y){
+		BufferedImage waterRemImg = new BufferedImage(dimx, dimy, BufferedImage.TYPE_INT_ARGB);
+		waterRemImg.setRGB(x, y, Color.blue.getRGB());
+	}
 	// generate a permuted list of linear index positions to allow a random
 	// traversal over the terrain
 	void genPermute() {

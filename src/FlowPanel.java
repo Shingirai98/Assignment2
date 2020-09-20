@@ -10,7 +10,7 @@ public class FlowPanel extends JPanel implements Runnable {
 	Terrain land;
 	Water waterObj;
 	Graphics g;
-
+	Flow flowObj;
 	//int xMax = land.getDimX();
 	//int yMax = land.getDimY();
 	//private List<Rect> rects = new LinkedList<Rect>();
@@ -59,6 +59,14 @@ public class FlowPanel extends JPanel implements Runnable {
 		// display loop here
 		// to do: this should be controlled by the GUI
 		// to allow stopping and starting
-	    repaint();
+		while(true){
+			while(Flow.play) {
+				//flowObj.timer.setText(" " + flowObj.timeListen);
+				Flow.player(land);
+				repaint();
+			}
+		}
+
+
 	}
 }

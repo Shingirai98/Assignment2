@@ -46,18 +46,31 @@ public class Water {
         return wDepth[x][y] + altitudes[x][y];
     }
     public void  updateWSurface(){
-        for (int i = 0; i <= getxDim(); i++) {
-            for (int j = 0; j <= getyDim(); j++) {
+
+        for (int i = 0; i < getxDim(); i++) {
+            wDepth[i][0] = 0;
+            wDepth[0][i] = 0;
+            wDepth[i][yDim-1] = 0;
+            wDepth[xDim-1][i] = 0;
+            for (int j = 0; j < getyDim(); j++) {
                 try {
 
+
                     wSurface[i][j] = wDepth[i][j] + altitudes[i][j];
+
+
                 }
                 catch(ArrayIndexOutOfBoundsException e){
                     continue;
-                }
-                }
             }
-        }
+
+            }
+                }
+
+            }
+
+
+
 
     public int lowestN(int x, int y){
 
@@ -102,11 +115,12 @@ public class Water {
     }
 
     public void removeWater(int x, int y){
-        wDepth[x][y] -= 0.01f;
+        wDepth[x][y] = wDepth[x][y]-0.01f;
     }
-    public void setEdges(){
+    public void addInitWater(int x, int y){
+        wDepth[x][y] += 0.03f;
+    }
 
-    }
     public void remWater() {
         for (int i = 0; i <= getxDim(); i++) {
             for (int j = 0; j <= getyDim(); j++) {
