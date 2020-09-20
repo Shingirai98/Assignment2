@@ -1,4 +1,10 @@
-//package FlowSkeleton;
+/**
+ * <h1>Flow!</h1>
+ * <p>This is the Flow Class which contains the GUI specs and main method</p>
+ * @Author Denver Maburutse & James Gain
+ * @version 1.0
+ * @since 2020-08-11
+ */
 
 import javax.swing.*;
 
@@ -23,15 +29,10 @@ public class Flow {
 	static JPanel panelObj;
 	static JPanel panelObj2;
 
-	private static void tick(){
-		startTime = System.currentTimeMillis();
-	}
 
-
-	private static float tock(){
-		return (System.currentTimeMillis() - startTime) / 1000.0f;
-	}
-
+	/**
+	 * <p>adder method add the time listener Jlabel</p>
+	 */
 	//method to setup the GUI
 	public static void adder(){
 		Component[] a = Flow.panelObj2.getComponents();
@@ -39,6 +40,10 @@ public class Flow {
 		h.setText("\t \t \t Time: " +timeListen++ );
 
 	}
+	/**
+	 *<p> player method executes the play button whenever play is true
+	 * @param landdata : terrain height values and imgs
+	 */
 	public static void player(Terrain landdata){
 		landdata.w.updateWSurface();//get the watersurfaces of all the grid positions
 		//continuously draw
@@ -100,11 +105,6 @@ public class Flow {
 							k = 1;
 							l = 1;
 						}
-										/*if ((k == 0) && (l == 0)) {
-											continue;
-										}*/
-						//compare water surfaces and add water to lower surfaces whilst removing from the source
-
 
 
 
@@ -143,27 +143,32 @@ public class Flow {
 	}
 
 
-
+	/**
+	 * <p> method setupGUI makes the frame,panels,button and combines them together with their listeners</p>
+	 * @param frameX : xValue of length of frame
+	 * @param frameY : yValue of length of frame
+	 * @param landdata :terrain height values and imgs
+	 */
 	public static void setupGUI(int frameX,int frameY,Terrain landdata) {
 
 		//Dimension fsize = new Dimension(800, 800);//Instantiate frame size object
-    	frame = new JFrame("Waterflow");//Instantiate frame object
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//set the x button to close properly
-    	frame.getContentPane().setLayout(new BorderLayout());
+		frame = new JFrame("Waterflow");//Instantiate frame object
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//set the x button to close properly
+		frame.getContentPane().setLayout(new BorderLayout());
 
-      	panelObj = new JPanel(); //Instantiate a panel object
-        panelObj.setLayout(new BoxLayout(panelObj, BoxLayout.PAGE_AXIS));//Set panel layout with a page setup with a box layout
+		panelObj = new JPanel(); //Instantiate a panel object
+		panelObj.setLayout(new BoxLayout(panelObj, BoxLayout.PAGE_AXIS));//Set panel layout with a page setup with a box layout
 
 		fp = new FlowPanel(landdata);// make a new flow panel object called fp, this is where you are going to make a thread
 		fp.setPreferredSize(new Dimension(frameX,frameY)); // set size of flow panel depending on the input grid size
 		panelObj.add(fp);//add fp object to the JPanel object
 
 
-		// to do: add a MouseListener, buttons and ActionListeners on those buttons
+
 
 		//Buttons and ActionListeners for the buttons
 		panelObj2 = new JPanel();//Make a JPanel at the bottom of page for buttons
-	    panelObj2.setLayout(new BoxLayout(panelObj2, BoxLayout.LINE_AXIS));//put/lay the panel as a small line
+		panelObj2.setLayout(new BoxLayout(panelObj2, BoxLayout.LINE_AXIS));//put/lay the panel as a small line
 		JButton endB = new JButton("End");// create a JButton written 'End'
 		JButton resetB = new JButton("Reset");// create a JButton written 'Reset'
 		JButton pauseB = new JButton("Pause");// create a JButton written 'Pause'
@@ -180,6 +185,9 @@ public class Flow {
 		resetB.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent a){
 				//Add function to clear the page
+
+				timeListen = 0;
+				adder();
 				play = false;
 				for(int x = 0; x < landdata.getDimX(); x++){
 					for(int y = 0; y < landdata.getDimY(); y++){
@@ -220,9 +228,9 @@ public class Flow {
 		panelObj.add(panelObj2); // Add the lower panel to the big panel
 
 		frame.setSize(frameX, frameY+50);	// a little extra space at the bottom for buttons
-      	frame.setLocationRelativeTo(null);  // center window on screen
-      	frame.add(panelObj); //add body panel to frame
-        frame.setContentPane(panelObj);
+		frame.setLocationRelativeTo(null);  // center window on screen
+		frame.add(panelObj); //add body panel to frame
+		frame.setContentPane(panelObj);
 
 		frame.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -231,14 +239,14 @@ public class Flow {
 				int x = e.getX()-2;
 				int y = e.getY()-27;
 
-					for (int i = -3; i <= 3; i++) {
-						for (int j = -3; j <= 3; j++) {
-							try {
-								//landdata.w.wDepth[x + i][y + j] += 0.01f;
-								landdata.w.addInitWater(x+i, y+j);
-							}
-							catch (ArrayIndexOutOfBoundsException l){
-								continue;
+				for (int i = -3; i <= 3; i++) {
+					for (int j = -3; j <= 3; j++) {
+						try {
+							//landdata.w.wDepth[x + i][y + j] += 0.01f;
+							landdata.w.addInitWater(x+i, y+j);
+						}
+						catch (ArrayIndexOutOfBoundsException l){
+							continue;
 						}
 					}
 				}
@@ -255,8 +263,8 @@ public class Flow {
 		});
 
 		frame.setVisible(true);
-        Thread fpt = new Thread(fp);//Make a new Thread
-        fpt.start();// Run the run method with thread fpt
+		Thread fpt = new Thread(fp);//Make a new Thread
+		fpt.start();// Run the run method with thread fpt
 
 
 	}

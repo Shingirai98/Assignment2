@@ -1,4 +1,16 @@
-//package FlowSkeleton;
+/**
+ * <h1>Terrain!</h1>
+ * This is the terrain class
+ * It reads the data file that is an argument of the main methods
+ * This data is then converted to show certain colours depending on the height value.
+ * <p>
+ * The Terrain class derives both the land images and the water images
+ * </p>
+ * @Author Denver Maburutse & James Gain
+ * @version 1.0
+ * @since 2020-08-11
+ */
+
 import java.util.Locale;
 import java.io.File;
 import java.awt.image.*;
@@ -35,19 +47,17 @@ public class Terrain {
 
 	// get greyscale image
 	public BufferedImage getImage() {
-		  return img;
+		return img;
 	}
 
 	public BufferedImage getWaterImage() {
 		return waterImg;
 	}
-	// convert linear position into 2D location in grid
-	void locate(int pos, int [] ind)
-	{
-		ind[0] = (int) pos / dimy; // x
-		ind[1] = pos % dimy; // y
-	}
 
+	/**
+	 * <p>The deriveImage method normalizes different terrain heights and create a greyscale
+	 *	image that will be used to make a colour with different shades from black to white</p>
+	 */
 	// convert height values to greyscale colour and populate an image
 	void deriveImage()
 	{
@@ -66,30 +76,32 @@ public class Terrain {
 
 		for(int x=0; x < dimx; x++)
 			for(int y=0; y < dimy; y++) {
-				 // find normalized height value in range
-				 float val = (height[x][y] - minh) / (maxh - minh);
-				 Color col = new Color(val, val, val, 1.0f);
-				 img.setRGB(x, y, col.getRGB());
+				// find normalized height value in range
+				float val = (height[x][y] - minh) / (maxh - minh);
+				Color col = new Color(val, val, val, 1.0f);
+				img.setRGB(x, y, col.getRGB());
 			}
 	}
+
+	/**
+	 * <p>The waterImageDer method derives the water image by checking the value of water depth</p>
+	 */
 	void waterImageDer(){
 		waterImg = new BufferedImage(dimx, dimy, BufferedImage.TYPE_INT_ARGB);
 
-			for(int x=0; x < dimx; x++)
-				for(int y=0; y < dimy; y++) {
-					if (w.getWDepth(x,y) > 0){
-						waterImg.setRGB(x, y, Color.blue.getRGB());
+		for(int x=0; x < dimx; x++)
+			for(int y=0; y < dimy; y++) {
+				if (w.getWDepth(x,y) > 0){
+					waterImg.setRGB(x, y, Color.blue.getRGB());
 				}
 
-		}
+			}
 	}
 
-	void remWaterImage(int x, int y){
-		BufferedImage waterRemImg = new BufferedImage(dimx, dimy, BufferedImage.TYPE_INT_ARGB);
-		waterRemImg.setRGB(x, y, Color.blue.getRGB());
-	}
-	// generate a permuted list of linear index positions to allow a random
-	// traversal over the terrain
+	/**
+	 * <p> genPermute generates a permuted list of linear index positions to allows
+	 * random traversal over the terrain</p>
+	 */
 	void genPermute() {
 		permute = new ArrayList<Integer>();
 		for(int idx = 0; idx < dim(); idx++)
@@ -97,12 +109,34 @@ public class Terrain {
 		java.util.Collections.shuffle(permute);
 	}
 
-	// find permuted 2D location from a linear index in the
-	// range [0, dimx*dimy)
+	/**
+	 * <p> getPermute finds permuted 2D location from a linear index in the range of
+	 * zero to the total number of grid values ie. xDimensions * yDimensions</p>
+	 * @param  i     : linear index
+	 * @param  loc : array containing x and y value
+	 */
 	void getPermute(int i, int [] loc) {
 		locate(permute.get(i), loc);
 	}
 
+	/**
+	 * <p>locate method locates the grid position given a linear index and a length two array</p>
+	 * @param  pos   : linear index
+	 * @param  ind : array containing x and y value potentially
+	 */
+	void locate(int pos, int [] ind)
+	{
+		ind[0] = (int) pos / dimy; // x
+		ind[1] = pos % dimy; // y
+	}
+
+	/**
+	 * <p>readData method takes in a text file document
+	 * It derives the x dimensions and y xDimensions
+	 * It then assigns the values to 2D array height and assigns the water object altitudes to these values
+	 * The water depth values are also initiated at the same time</p>
+	 * @param fileName : filename containing terrain values
+	 */
 	// read in terrain from file
 	void readData(String fileName){
 		try{

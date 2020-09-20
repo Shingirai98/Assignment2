@@ -1,43 +1,41 @@
-//package FlowSkeleton;
+/**
+ * <h1>Flow Panel!</h1>
+ * The Flow Panel Program extends  implements Runnable.
+ * This then allows us to override the run method which will be executed by
+ * different threads
+ * <p>
+ * The Flow Panel also extends the JPanel which would not have been possible
+ * had we extended the Thread class.
+ * This inheritance allows us to ovveride the paintComponent methods</p>
+ * <p>
+ * @Author Denver Maburutse & James Gain
+ * @version 1.0
+ * @since 2020-08-11
+ * </p>
+ */
 
 import java.awt.*;
 import javax.swing.*;
-//import java.util.LinkedList;
-//import java.util.List;
 
 
 public class FlowPanel extends JPanel implements Runnable {
+
 	Terrain land;
 	Water waterObj;
 	Graphics g;
 	Flow flowObj;
-	//int xMax = land.getDimX();
-	//int yMax = land.getDimY();
-	//private List<Rect> rects = new LinkedList<Rect>();
+
 	FlowPanel(Terrain terrain) {
 		land=terrain;
 	}
 
-	// responsible for painting the terrain and water
-	// as images
-	/*public void addRect(Rect rect){
-		rects.add(rect);
-		this.repaint();
-	}*/
-
-	/*public void remRect(){
-		//rects.clear();
-		for(Rect r : rects){
-			//Flow f = new Flow();
-			r.undraw(g);
-			this.repaint();
-		}
-
-		rects.clear();
-		//paintComponent(g);
-	}*/
+	/**
+	 *<p>This is an overriden method from the JPanel class.
+	 * It assigns the the width and height of the class.
+	 * It assigns the water and land terrain imagery
+	 */
 	@Override
-    protected void paintComponent(Graphics g) {//Override the paintComponent method from JPanel
+	protected void paintComponent(Graphics g) {//Override the paintComponent method from JPanel
 		int width = getWidth();
 		int height = getHeight();
 
@@ -54,7 +52,10 @@ public class FlowPanel extends JPanel implements Runnable {
 
 
 	}
-
+	/**
+	 * This is an overriden method from the Runnable interface
+	 * It is executed by every thread created and repaints the image after every time step
+	 */
 	public void run() {
 		// display loop here
 		// to do: this should be controlled by the GUI
